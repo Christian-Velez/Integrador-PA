@@ -1,0 +1,60 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 13 jun 2022, 15:46:13
+    Author     : C
+*/
+
+
+
+.navbar {
+    min-height: 100vh;
+    width: 300px;
+    padding: 40px 20px;
+    position: sticky;
+    top: 0px;
+    background-color: var(--black);
+    color: white;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.profile {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+}
+
+.email {
+    font-size: 13px;
+}
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    
+    width: 250px;
+    
+}
+
+.navbar-item {
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    padding: 30px 10px;
+}
+
+.navbar-item:hover {
+    background-color: black;
+}

@@ -1,0 +1,87 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 13 jun 2022, 11:55:02
+    Author     : C
+*/
+
+* {
+    font-family:  sans-serif;
+    margin: 0px !important;
+    padding: 0px;
+}
+
+
+:root {
+  --tea-green: #C9E4CA;
+  --eton-blue: #87BBA2;
+  --steel-teal: #55828B;
+  --deep-space-sparkle: #3B6064;
+  --charcoal: #364958;
+  --black: #1A202C;
+}
+
+button {
+    padding: 10px;
+    background-color : #3B6064;
+    color: white;
+    border: 0px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* unvisited link */
+a:link {
+  color: var(--steel-teal);
+  text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+  color: var(--steel-teal);
+  text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+  color: var(--steel-teal);
+  text-decoration: underline;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+
+
+
+.body-page-container {
+    display: flex;
+    width: 100%;
+}
