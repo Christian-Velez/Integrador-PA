@@ -18,10 +18,7 @@ import java.util.ArrayList;
  */
 public class ClienteController extends Controller {
     
-    
-    
     public ArrayList<Cliente> getAllClientes(int idVeterinario) {
-        
         ArrayList<Cliente> clientes = new ArrayList<>();
         PreparedStatement ps; 
         ResultSet r;
@@ -52,7 +49,6 @@ public class ClienteController extends Controller {
         } catch (SQLException ex) {
             Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         
         return clientes;
     }

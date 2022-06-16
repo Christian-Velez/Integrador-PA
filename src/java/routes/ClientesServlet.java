@@ -102,7 +102,6 @@ public class ClientesServlet extends HttpServlet {
     }
     
     private void updateCliente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        System.out.println("SIDA MAYOR");
         int idCliente = Integer.parseInt(request.getParameter("idCliente"));
         String nombre = request.getParameter("nombre");
         String telefono = request.getParameter("telefono");

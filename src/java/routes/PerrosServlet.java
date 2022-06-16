@@ -98,15 +98,36 @@ public class PerrosServlet extends HttpServlet {
     }
     
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idPerro = Integer.parseInt(request.getParameter("id"));
+        Perro perro = perrosDAO.selectPerro(idPerro);
+        request.setAttribute("Perro", perro);
+
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        ArrayList<Cliente> clientes = clientesDAO.getAllClientes(idVeterinario);
+        request.setAttribute("Clientes", clientes);
+        request.setAttribute("Clientes", clientes);
         
+        RequestDispatcher dispatcher = request.getRequestDispatcher("perros-form.jsp");
+        dispatcher.forward(request, response);
     }
     
     private void updatePerro(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idPerro = Integer.parseInt(request.getParameter("idPerro"));
+        String nombre = request.getParameter("nombre");
+        String enfermedad = request.getParameter("enfermedad");
+        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
+        String atendidoString = request.getParameter("atendido");
         
+        boolean atendido = (atendidoString.equals("Si"));
+        
+        perrosDAO.updatePerro(idPerro, nombre, enfermedad, idCliente, atendido);
+        response.sendRedirect("Perros");
     }
     
     private void deletePerro(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        
+        int idPerro = Integer.parseInt(request.getParameter("id"));
+        perrosDAO.deletePerro(idPerro);
+        response.sendRedirect("Perros");
     }
     
     private void showPerros(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

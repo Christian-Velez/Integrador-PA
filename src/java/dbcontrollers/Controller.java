@@ -24,7 +24,7 @@ public class Controller {
             
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("no existe");
+            System.out.println("nO SE PUDO REALIZAR LA CONEXION A LA BASE DE DATOS");
         } 
     }
 }

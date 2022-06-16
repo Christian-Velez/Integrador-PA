@@ -17,6 +17,17 @@ public class Perro {
     public String enfermedad;
     public boolean atendido;
     
+    public Perro() {}
+    
+    
+    public Perro(int id, int idVeterinario, int idCliente, String nombre, String enfermedad, boolean atendido) {
+        this.id = id;
+        this.idVeterinario = idVeterinario;
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.enfermedad = enfermedad;
+        this.atendido = atendido;
+    }
     
     public Perro(int id, int idVeterinario, int idCliente, String clienteNombre, String nombre, String enfermedad, boolean atendido) {
         this.id = id;

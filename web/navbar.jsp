@@ -23,44 +23,44 @@
             <p class="email"> <%= user.email %> </p>
         </div>
     </div>
-    
-    
-    
-    <!--<p> <%= user.id %> </p>-->
-    
+   
     
     <div class="nav-items">
-                
+        <a href="/Integrador/Cartera">
+            <div class="navbar-item">
+                Mi cartera
+            </div>
+        </a>     
+        
         <a href="/Integrador/Clientes">
             <div class="navbar-item">
                 Clientes
             </div>
-        </a> 
+        </a>
+        
+        <a href="/Integrador/Citas">
+            <div class="navbar-item">
+                Citas
+            </div>
+        </a>
+        
+        <a href="/Integrador/Inventario">
+            <div class="navbar-item">
+                Inventario
+            </div>
+        </a>
 
         <a href="/Integrador/Perros">
             <div class="navbar-item">
                 Perros
             </div>
         </a>
-
- <!--        <a href="/Integrador/Teams">
+        
+        <a href="/Integrador/Gatos">
             <div class="navbar-item">
                 Gatos
             </div>
         </a>
-        
-        <a href="/Integrador/Teams">
-            <div class="navbar-item">
-                Aves
-            </div>
-        </a>
-        
-        <a href="/Integrador/Teams">
-            <div class="navbar-item">
-                Otro animal
-            </div>
-        </a>-->
-        
         
         <a href="/Integrador/CloseSession">
             <div class="navbar-item">

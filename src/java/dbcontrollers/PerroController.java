@@ -21,6 +21,47 @@ public class PerroController extends Controller {
     public PerroController() {}
     
     
+    public Perro selectPerro(int idPerro) {
+        Perro perro = new Perro();
+        PreparedStatement ps; 
+        ResultSet r;
+
+        String query = ("SELECT "
+                + "perros.id, perros.idVeterinario, perros.idCliente, perros.nombre, perros.enfermedad, perros.atendido, clientes.nombre AS clienteNombre"
+                + " FROM perros"
+                + " INNER JOIN clientes"
+                + " ON perros.idCliente = clientes.id"
+                + " WHERE perros.id = ?"
+                        );
+        
+        
+        try {
+            ps = c.prepareStatement(query);
+            ps.setInt(1, idPerro);
+            r = ps.executeQuery();
+            
+            while(r.next()) {
+                int id = r.getInt("id");
+                int idVeterinario = r.getInt("idVeterinario");
+                int idCliente = r.getInt("idCliente");
+                String nombre = r.getString("nombre");
+                String telefono = r.getString("enfermedad");
+                boolean atendido = r.getBoolean("atendido");
+                String nombreCliente = r.getString("clienteNombre");
+                
+                return new Perro(id, idVeterinario, idCliente, nombreCliente, nombre, telefono, atendido);
+            }
+
+            return perro;
+        } catch (SQLException ex) {
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return perro;
+    }
+    
+    
     public ArrayList<Perro> getAllPerros(int idVeterinario) {
         
         ArrayList<Perro> perros = new ArrayList<>();
@@ -80,6 +121,42 @@ public class PerroController extends Controller {
             ps.executeUpdate();
             System.out.println("PerroController: Registrado");
             
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deletePerro(int id) {
+        PreparedStatement ps; 
+        String query = "DELETE FROM perros WHERE id = ?";
+        
+        try {
+            ps = c.prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            System.out.println("PerroController: Eliminado");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void updatePerro(int idPerro, String nombre, String enfermedad, int idCliente, boolean atendido) {
+        PreparedStatement ps; 
+        String query = "UPDATE perros SET NOMBRE = ?, ENFERMEDAD = ?, idCliente = ?, ATENDIDO = ? WHERE id = ?";
+        
+        try {
+            ps = c.prepareStatement(query);
+            ps.setString(1, nombre);
+            ps.setString(2, enfermedad);
+            ps.setInt(3, idCliente);
+            ps.setBoolean(4, atendido);
+            ps.setInt(5, idPerro);
+            
+            ps.executeUpdate();
+            System.out.println("PerroController: Actualizado");
             
         } catch (SQLException ex) {
             Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
