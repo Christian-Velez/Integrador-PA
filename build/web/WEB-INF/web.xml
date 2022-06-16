@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>routes.Register</servlet-class>
+        <servlet-class>routes.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MyProjects</servlet-name>

@@ -4,11 +4,10 @@
  */
 package routes;
 
-import dbcontrollers.UserController;
-import dbmodels.User;
+import dbcontrollers.VeterinarioController;
+import dbmodels.Veterinario;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,51 +19,55 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author C
  */
 @WebServlet(name = "Home", urlPatterns = {"/Home"})
-public class Home extends HttpServlet {
+public class HomeServlet extends HttpServlet {
+    
+    VeterinarioController veterinarioDAO;
+    
+    public void init() {
+        veterinarioDAO = new VeterinarioController();
+    }
 
     @Override
     // VIENE AQUI SI EL USUARIO RECARGA LA PAGINA
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        
-        Boolean isAuthenticated = Validator.isUserAuthenticated(request);
+        // == VALIDACION ===
+        boolean isAuthenticated = Validator.isUserAuthenticated(request);
         if(!isAuthenticated) {
-            RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-            rd.forward(request, response);
+            response.sendRedirect("");
+            return;
         }
         
+        // === INFORMACION GENERAL DEL VETERINARIO ===
         String email = (String)request.getSession().getAttribute("email-session");
-        System.out.println("Email del usuario: " + email);
-
-        UserController uH = new UserController();
-        User user = uH.getUser(email);
+        Veterinario user = veterinarioDAO.getVeterinario(email);
         request.setAttribute("Usuario", user);
-
+        
+        
+        // == RETORNO LA PAGINA ===
         RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
         rd.forward(request, response);
-      
     }
     
-
-    // VIENE AQUI DESPUES DE LA REDIRECCION DEL SERVLET Register y Login
+    
+    // Register y Login
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         String email = (String)request.getAttribute("email");
         
-        UserController uH = new UserController();
-        User user = uH.getUser(email);
+        VeterinarioController uH = new VeterinarioController();
+        Veterinario user = uH.getVeterinario(email);
         request.setAttribute("Usuario", user);
         
-        RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
-        rd.forward(request, response);
+        // Guardo su id y email en la sesion para corroborar rutas posteriormente
+        request.getSession().setAttribute("email-session", email);
+        request.getSession().setAttribute("idVeterinario", user.id);
+        
+        
+        response.sendRedirect("Home");
     }
-
-    
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
+  
 }

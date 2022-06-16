@@ -14,16 +14,16 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Project Manager</title>
+        <title>VeterinariasABC</title>
     </head>
     <body>
         
         
         <div class="index-container">
             <div class="login-container">
-              <h1>Bienvenido a Project Manager</h1>
-                <p> La aplicación para administrar tus proyectos personales </p>
-                <img src="media/login.png"/>
+              <h1>Bienvenido a VeterinariasABC</h1>
+                <p> La mejor aplicación web para administrar tu veterinaria </p>
+                <img src="media/dog.png"/>
             </div>
             
             

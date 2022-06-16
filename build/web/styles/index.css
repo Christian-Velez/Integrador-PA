@@ -18,6 +18,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     padding-top: 7%;
     align-items: center;
     gap: 80px;
+    padding-bottom: 7%;
 }
 
 .login-container {

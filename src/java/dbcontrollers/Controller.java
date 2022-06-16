@@ -19,7 +19,7 @@ public class Controller {
     public Controller() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); //conexión con la bd
-            c  = DriverManager.getConnection("jdbc:mysql://localhost/integrador_pa","root",""); //dominio para bd fuera del equipo, usuario, contraseña
+            c  = DriverManager.getConnection("jdbc:mysql://localhost/veterinariaabc","root",""); //dominio para bd fuera del equipo, usuario, contraseña
             
             
         } catch (Exception e) {

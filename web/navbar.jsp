@@ -12,14 +12,14 @@
 
 
 <div class="navbar">
-    <h2>Project Manager </h2>
+    <h2>Veterinarias abc </h2>
     
     
     <div class="profile">
-        <img class="profile-img" src="media/profile.jpg" />
+        <img class="profile-img" src="media/dog-bowl.png" />
         
         <div>
-            <p> <%= user.name %> </p>
+            <p> <%= user.nombre %> </p>
             <p class="email"> <%= user.email %> </p>
         </div>
     </div>
@@ -31,23 +31,35 @@
     
     <div class="nav-items">
                 
-        <a href="/Integrador/Projects">
+        <a href="/Integrador/Clientes">
             <div class="navbar-item">
-                Proyectos
+                Clientes
             </div>
-        </a>
+        </a> 
 
-        <a href="/Integrador/Friends">
+<!--        <a href="/Integrador/Perros">
             <div class="navbar-item">
-                Amigos
+                Perros
             </div>
         </a>
 
         <a href="/Integrador/Teams">
             <div class="navbar-item">
-                Equipos de trabajo
+                Gatos
             </div>
         </a>
+        
+        <a href="/Integrador/Teams">
+            <div class="navbar-item">
+                Aves
+            </div>
+        </a>
+        
+        <a href="/Integrador/Teams">
+            <div class="navbar-item">
+                Otro animal
+            </div>
+        </a>-->
         
         
         <a href="/Integrador/CloseSession">

@@ -8,18 +8,18 @@ package dbmodels;
  *
  * @author C
  */
-public class User {
+public class Veterinario {
     public int id;
     public String email;
-    public String name;
+    public String nombre;
     
-    public User() {}
+    public Veterinario() {}
     
     
-    public User(int id, String email, String name) {
+    public Veterinario(int id, String email, String name) {
         this.id = id;
         this.email = email;
-        this.name = name;
+        this.nombre = name;
     }
 }
 

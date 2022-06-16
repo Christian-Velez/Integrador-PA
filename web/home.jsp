@@ -1,7 +1,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@page import="dbmodels.User" %>
+<%@page import="dbmodels.Veterinario" %>
 
 
 
@@ -19,7 +19,7 @@
       
         <!-- Variables enviadas desde el Servlet  -->
         <% 
-            User user = (User)request.getAttribute("Usuario");
+            Veterinario user = (Veterinario)request.getAttribute("Usuario");
         %>
         
         

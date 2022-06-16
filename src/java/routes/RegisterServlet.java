@@ -4,7 +4,7 @@
  */
 package routes;
 
-import dbcontrollers.UserController;
+import dbcontrollers.VeterinarioController;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author C
  */
-public class Register extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
     protected String middleWare() {
         return "";
     }
@@ -46,7 +46,7 @@ public class Register extends HttpServlet {
         String name = request.getParameter("name");
         
         
-        UserController rC = new UserController();
+        VeterinarioController rC = new VeterinarioController();
         rC.register(email, password, name);
         
         

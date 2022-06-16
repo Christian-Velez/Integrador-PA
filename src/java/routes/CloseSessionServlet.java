@@ -4,41 +4,23 @@
  */
 package routes;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContext;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author C
- */
+
+
+
 @WebServlet(name = "CloseSession", urlPatterns = {"/CloseSession"})
-public class CloseSession extends HttpServlet {
-
-
-   
+public class CloseSessionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         request.getSession().removeAttribute("email-session");
-        response.sendRedirect("/Integrador");
+        request.getSession().removeAttribute("idVeterinario");
+        response.sendRedirect("");
     }
-
-    
-    
-    
-    
-    
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

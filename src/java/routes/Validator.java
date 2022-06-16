@@ -16,9 +16,6 @@ public class Validator {
     
     static Boolean isUserAuthenticated(HttpServletRequest request) {
         String email = (String)request.getSession().getAttribute("email-session");
-        
-        System.out.println("EMAIL: " + email);
-
         if(email != null) {
             return true;
         }

@@ -4,7 +4,7 @@
  */
 package routes;
 
-import dbcontrollers.UserController;
+import dbcontrollers.VeterinarioController;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author C
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     
     public void returnLoginPage(HttpServletRequest request, HttpServletResponse response) {
@@ -31,9 +31,9 @@ public class Login extends HttpServlet {
         try {
             miDispatcher.forward(request, response);
         } catch (ServletException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
@@ -54,26 +54,29 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         
-        UserController rC = new UserController();
+        VeterinarioController rC = new VeterinarioController();
         int result = rC.login(email, password);
 
         // Inicio de sesion
-        if(result == 1) {
-            
-            // Guardo su email en la sesion para corroborar rutas posteriormente
-            request.getSession().setAttribute("email-session", email);
-            
-            request.setAttribute("email", email);
-            ServletContext context= getServletContext();
-            RequestDispatcher rd= context.getRequestDispatcher("/Home");
-            rd.forward(request, response);
-        } 
         
         // Error
-        else {
+        if(result == -1) {
             request.setAttribute("error", "Las credenciales no son correctas");
             returnLoginPage(request, response);
+            return;
         }
+        
+        
+            
+        // Guardo su id y email en la sesion para corroborar rutas posteriormente
+        request.getSession().setAttribute("email-session", email);
+        request.getSession().setAttribute("idVeterinario", result);
+
+        request.setAttribute("email", email);
+        ServletContext context= getServletContext();
+        RequestDispatcher rd= context.getRequestDispatcher("/Home");
+        rd.forward(request, response);
+        
     }
 
     

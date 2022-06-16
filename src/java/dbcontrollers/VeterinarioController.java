@@ -1,20 +1,20 @@
 
 package dbcontrollers;
-import dbmodels.User;
+import dbmodels.Veterinario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserController extends Controller {
+public class VeterinarioController extends Controller {
 
     
     public int login(String email, String password) {
         PreparedStatement ps; 
         ResultSet r;
         
-        String query = "SELECT * FROM usuarios WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM veterinarios WHERE email = ? AND password = ?";
         try {
             ps = c.prepareStatement(query);
             ps.setString(1, email);
@@ -24,51 +24,52 @@ public class UserController extends Controller {
 
             if(r.next()){
                 // Se encontro
-                return 1;
+                int veterinarioId = r.getInt("id");
+                return veterinarioId;
             }
             
-            return 0;
+            return -1;
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
 
-        return 0;
+        return -1;
     }
     
 
-    public void register(String email, String password, String name ) {
+    public void register(String email, String password, String nombre ) {
         PreparedStatement ps; 
-        String query = "INSERT INTO usuarios (EMAIL, PASSWORD, NAME) VALUES(?, ?, ?)";
+        String query = "INSERT INTO veterinarios (EMAIL, PASSWORD, NOMBRE) VALUES(?, ?, ?)";
  
         try {
             ps = c.prepareStatement(query);
             ps.setString(1, email);
             ps.setString(2, password);
-            ps.setString(3, name);
+            ps.setString(3, nombre);
             ps.executeUpdate();
             System.out.println("RegisterController: Registrado");
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
     
     
-    public void getUser(int id) {
+    public void getVeterinario(int id) {
         
     }
     
-    public User getUser(String email) {
+    public Veterinario getVeterinario(String email) {
         
         PreparedStatement ps; 
         ResultSet r;
         
-        String query = "SELECT * FROM usuarios WHERE email = ? ";
+        String query = "SELECT * FROM veterinarios WHERE email = ? ";
         try {
             ps = c.prepareStatement(query);
             ps.setString(1, email);
@@ -77,15 +78,15 @@ public class UserController extends Controller {
 
             if(r.next()){
                 int id = r.getInt("id");
-                String name = r.getString("name");
-                User user = new User(id, email, name);
-                return user;
+                String name = r.getString("nombre");
+                Veterinario veterinario = new Veterinario(id, email, name);
+                return veterinario;
             }
             
             
             
         } catch (SQLException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
 
