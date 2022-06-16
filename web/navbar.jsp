@@ -37,13 +37,13 @@
             </div>
         </a> 
 
-<!--        <a href="/Integrador/Perros">
+        <a href="/Integrador/Perros">
             <div class="navbar-item">
                 Perros
             </div>
         </a>
 
-        <a href="/Integrador/Teams">
+ <!--        <a href="/Integrador/Teams">
             <div class="navbar-item">
                 Gatos
             </div>

@@ -4,38 +4,40 @@
  */
 package routes;
 
-import dbcontrollers.ClienteController;
+import dbcontrollers.PerroController;
 import dbcontrollers.VeterinarioController;
+import dbmodels.Cliente;
 import dbmodels.Veterinario;
+import dbmodels.Perro;
+import dbcontrollers.ClienteController;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import dbmodels.Cliente;
 import java.util.ArrayList;
-
 
 /**
  *
  * @author C
  */
-@WebServlet(name = "Clientes", urlPatterns = {"/Clientes"})
-public class ClientesServlet extends HttpServlet {
+@WebServlet(name = "Perros", urlPatterns = {"/Perros"})
+public class PerrosServlet extends HttpServlet {
     
-    private ClienteController clientesDAO;
+    PerroController perrosDAO;
+    ClienteController clientesDAO;
     
     public void init() {
+        perrosDAO = new PerroController();
         clientesDAO = new ClienteController();
     }
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
-    
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -64,7 +66,7 @@ public class ClientesServlet extends HttpServlet {
         
         switch (action) {
             case "ADD":
-                insertCliente(request, response);
+                insertPerro(request, response);
                 break;
                 
             case "EDIT":
@@ -72,55 +74,51 @@ public class ClientesServlet extends HttpServlet {
                 break;
                 
             case "UPDATE":
-                updateCliente(request, response);
+                updatePerro(request, response);
                 break;
                 
             case "DELETE":
-                deleteCliente(request, response);
+                deletePerro(request, response);
                 break;
             
             default:
-                showClientes(request, response);
+                showPerros(request, response);
                 break;
         }
     }
     
-    private void insertCliente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void insertPerro(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
         String nombre = request.getParameter("nombre");
-        String telefono = request.getParameter("telefono");
-        clientesDAO.insertCliente(idVeterinario, nombre, telefono);
-        response.sendRedirect("Clientes");
+        String enfermedad = request.getParameter("enfermedad");
+        
+        perrosDAO.insertPerro(idVeterinario, idCliente, nombre, enfermedad);
+        response.sendRedirect("Perros");
     }
     
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int idCliente = Integer.parseInt(request.getParameter("id"));
-        Cliente cliente = clientesDAO.selectCliente(idCliente);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("clientes-form.jsp");
-        request.setAttribute("Cliente", cliente);
-        dispatcher.forward(request, response);
+        
     }
     
-    private void updateCliente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        System.out.println("SIDA MAYOR");
-        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
-        String nombre = request.getParameter("nombre");
-        String telefono = request.getParameter("telefono");
-        clientesDAO.updateCliente(idCliente, nombre, telefono);
-        response.sendRedirect("Clientes");
+    private void updatePerro(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        
     }
     
-    private void deleteCliente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int idCliente = Integer.parseInt(request.getParameter("id"));
-        clientesDAO.deleteCliente(idCliente);
-        response.sendRedirect("Clientes");
+    private void deletePerro(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        
     }
     
-    private void showClientes(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void showPerros(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        
+        ArrayList<Perro> perros = perrosDAO.getAllPerros(idVeterinario);
+        request.setAttribute("Perros", perros);
+        
         ArrayList<Cliente> clientes = clientesDAO.getAllClientes(idVeterinario);
         request.setAttribute("Clientes", clientes);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("clientes.jsp");
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("perros.jsp");
         dispatcher.forward(request, response);
     }
 }

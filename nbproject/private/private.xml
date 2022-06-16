@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/web/styles/global.css</file>
-            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/src/java/dbmodels/Veterinario.java</file>
-            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/web/animales.jsp</file>
-            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/web/styles/navbar.css</file>
+            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/src/java/dbmodels/Perro.java</file>
+            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/web/perros.jsp</file>
+            <file>file:/C:/Users/C/OneDrive/Documentos/Java/Integrador/src/java/dbcontrollers/PerroController.java</file>
         </group>
     </open-files>
 </project-private>
