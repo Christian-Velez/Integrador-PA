@@ -12,18 +12,21 @@
 
 
 <div class="navbar">
-    <h2>Veterinarias abc </h2>
+    <h2>Veterinarias ABC</h2>
     
     
-    <div class="profile">
-        <img class="profile-img" src="media/dog-bowl.png" />
-        
-        <div>
-            <p> <%= user.nombre %> </p>
-            <p class="email"> <%= user.email %> </p>
+    
+    <a href="/Integrador/Perfil">
+        <div class="profile">
+            <img src="https://avatars.dicebear.com/api/avataaars/<%=user.nombre%>.svg" alt="Foto de perfil" class="profile-img"/>
+
+            <div>
+                <p> <%= user.nombre %> </p>
+                <p class="email"> <%= user.email %> </p>
+            </div>
         </div>
-    </div>
-   
+    </a>
+
     
     <div class="nav-items">
         <a href="/Integrador/Cartera">

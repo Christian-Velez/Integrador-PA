@@ -4,6 +4,11 @@
  */
 package routes;
 
+import dbcontrollers.CarteraController;
+import dbcontrollers.VeterinarioController;
+import dbmodels.Movimiento;
+import dbmodels.Veterinario;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +16,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,69 +25,111 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "CarteraServlet", urlPatterns = {"/Cartera"})
 public class CarteraServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CarteraServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CarteraServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    CarteraController carteraDAO;
+    
+    public void init() {
+        carteraDAO = new CarteraController();
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // === VALIDACION ===
+        boolean isAuthenticated = Validator.isUserAuthenticated(request);
+        if(!isAuthenticated) {
+            response.sendRedirect("");
+            return;
+        }
+        
+        
+        // === INFORMACION GENERAL DEL VETERINARIO ===
+        String email = (String)request.getSession().getAttribute("email-session");
+        VeterinarioController uH = new VeterinarioController();
+        Veterinario user = uH.getVeterinario(email);
+        request.setAttribute("Usuario", user);
+        
+        
+        String action = request.getParameter("action");
+        System.out.println("Action: " + action);
+        
+        
+        if(action == null) {
+            action = "GET";
+        }
+        
+        switch (action) {
+            case "ADD":
+                insertMovimiento(request, response);
+                break;
+                
+            case "EDIT":
+                break;
+                
+            case "UPDATE":
+                break;
+                
+            case "DELETE":
+                deleteMovimiento(request, response);
+                break;
+            
+            default:
+                showMovimientos(request, response);
+                break;
+        }
+            
+        
+        
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    
+    
+    private void insertMovimiento(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        String concepto = request.getParameter("concepto");
+        String tipo = request.getParameter("tipo");
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+        String fecha = request.getParameter("fecha");
+        
+        if(tipo.equals("GASTO")) {
+            cantidad = cantidad*(-1);
+        }
+        
+        carteraDAO.insertMovimiento(idVeterinario, concepto, cantidad, fecha);
+        response.sendRedirect("Cartera");
+    }
+    
+    
+    private void deleteMovimiento(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idMovimiento = Integer.parseInt(request.getParameter("id"));
+        carteraDAO.deleteMovimiento(idMovimiento);
+        response.sendRedirect("Cartera");
+    }
+    
+    
+    private void showMovimientos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
 
+        ArrayList<Movimiento> movimientos = carteraDAO.getMovimientos(idVeterinario);
+        request.setAttribute("Movimientos", movimientos);
+        
+        int balanceGeneral = carteraDAO.getBalanceGeneral(idVeterinario);
+        request.setAttribute("BalanceGeneral", balanceGeneral);
+        
+        
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("cartera.jsp");
+        dispatcher.forward(request, response);
+        
+        
+    }
+
+   
 }

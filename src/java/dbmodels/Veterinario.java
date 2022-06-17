@@ -12,6 +12,8 @@ public class Veterinario {
     public int id;
     public String email;
     public String nombre;
+    public String password;
+    
     
     public Veterinario() {}
     

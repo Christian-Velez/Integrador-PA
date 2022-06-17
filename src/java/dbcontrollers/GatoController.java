@@ -130,7 +130,6 @@ public class GatoController extends Controller {
     public void deleteGato(int id) {
         PreparedStatement ps; 
         String query = "DELETE FROM gatos WHERE id = ?";
-        System.out.println("Llega aqui");
         
         try {
             ps = c.prepareStatement(query);

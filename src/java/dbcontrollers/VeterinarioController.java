@@ -60,7 +60,7 @@ public class VeterinarioController extends Controller {
     }
     
     
-    public void getVeterinario(int id) {
+    public void getVeterinarioPassword(int id) {
         
     }
     
@@ -80,6 +80,8 @@ public class VeterinarioController extends Controller {
                 int id = r.getInt("id");
                 String name = r.getString("nombre");
                 Veterinario veterinario = new Veterinario(id, email, name);
+                veterinario.password = r.getString("password");
+                
                 return veterinario;
             }
             
@@ -91,6 +93,28 @@ public class VeterinarioController extends Controller {
         
 
         return null;
+    }
+    
+    
+    
+    public void updateVeterinario(int idVeterinario, String nombre, String password) {
+        
+        PreparedStatement ps; 
+        String query = "UPDATE veterinarios SET NOMBRE = ?, PASSWORD = ? WHERE id = ?";
+        
+        try {
+            ps = c.prepareStatement(query);
+            ps.setString(1, nombre);
+            ps.setString(2, password);
+            ps.setInt(3, idVeterinario);
+            
+            ps.executeUpdate();
+            System.out.println("VeterinarioController: Actualizado");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(VeterinarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
 
