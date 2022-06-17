@@ -25,9 +25,9 @@
         
         <%@include file="navbar.jsp" %>
 
-    
         
-        <h1>Home</h1>
-        
+        <div class="page-content">
+            <h1>Bienvenido <%= user.nombre %> </h1>
+        </div>
     </body>
 </html>

@@ -9,5 +9,33 @@ package dbmodels;
  * @author C
  */
 public class Gato {
+    public int id;
+    public int idVeterinario;
+    public int idCliente; // Dueño
+    public String nombreCliente;
+    public String nombre; 
+    public String enfermedad;
+    public boolean atendido;
     
+    public Gato() {}
+    
+    
+    public Gato(int id, int idVeterinario, int idCliente, String nombre, String enfermedad, boolean atendido) {
+        this.id = id;
+        this.idVeterinario = idVeterinario;
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.enfermedad = enfermedad;
+        this.atendido = atendido;
+    }
+    
+    public Gato(int id, int idVeterinario, int idCliente, String clienteNombre, String nombre, String enfermedad, boolean atendido) {
+        this.id = id;
+        this.idVeterinario = idVeterinario;
+        this.idCliente = idCliente;
+        this.nombreCliente = clienteNombre;
+        this.nombre = nombre;
+        this.enfermedad = enfermedad;
+        this.atendido = atendido;
+    }
 }
