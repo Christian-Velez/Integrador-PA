@@ -8,10 +8,11 @@ import dbcontrollers.ProductoController;
 import dbcontrollers.TipoProductoController;
 import dbcontrollers.VeterinarioController;
 import dbmodels.Producto;
+import dbmodels.Proveedor;
 import dbmodels.TipoProducto;
 
 import dbmodels.Veterinario;
-
+import dbcontrollers.ProveedorController;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,10 +32,12 @@ public class InventarioServlet extends HttpServlet {
 
     ProductoController productosDAO;
     TipoProductoController tiposDAO;
+    ProveedorController proveedoresDAO;
     
     public void init() {
         productosDAO = new ProductoController();
         tiposDAO = new TipoProductoController();
+        proveedoresDAO = new ProveedorController();
     }
     
     
@@ -69,15 +72,19 @@ public class InventarioServlet extends HttpServlet {
         
         switch (action) {
             case "ADD_PRODUCTO":
+                insertProducto(request, response);
                 break;
                 
             case "EDIT_PRODUCTO":
+                showEditProductoForm(request, response);
                 break;
                 
             case "UPDATE_PRODUCTO":
+                updateProducto(request, response);
                 break;
                 
             case "DELETE_PRODUCTO":
+                deleteProducto(request, response);
                 break;
                 
                 
@@ -98,6 +105,60 @@ public class InventarioServlet extends HttpServlet {
                 break;
         }
     }
+    
+    private void insertProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        String nombre = request.getParameter("nombre");
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+
+        productosDAO.insertProducto(idTipo, idVeterinario, idProveedor, nombre, cantidad);
+        response.sendRedirect("Inventario");
+    }
+    
+    private void showEditProductoForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+
+        int idProducto = Integer.parseInt(request.getParameter("id"));
+        Producto producto = productosDAO.selectProducto(idProducto);
+        request.setAttribute("Producto", producto);
+        
+        ArrayList<TipoProducto> tipos = tiposDAO.getAllTipos(idVeterinario);
+        request.setAttribute("Tipos", tipos);
+        
+        ArrayList<Proveedor> proveedores = proveedoresDAO.getAllProveedores(idVeterinario);
+        request.setAttribute("Proveedores", proveedores);
+        
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("inventario-form.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void updateProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idProducto = Integer.parseInt(request.getParameter("idProducto"));
+        String nombre = request.getParameter("nombre");
+        
+        int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+        
+        productosDAO.updateProducto(idTipo, idProveedor, nombre, cantidad, idProducto);
+        
+        response.sendRedirect("Inventario");
+        
+    }
+    
+    private void deleteProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idProducto = Integer.parseInt(request.getParameter("id"));
+        productosDAO.deleteProducto(idProducto);
+        response.sendRedirect("Inventario");
+    }
+    
+    
+    
+    
+    
     
     
     private void insertTipo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -128,6 +189,12 @@ public class InventarioServlet extends HttpServlet {
         
         ArrayList<TipoProducto> tipos = tiposDAO.getAllTipos(idVeterinario);
         request.setAttribute("Tipos", tipos);
+        
+        ArrayList<Proveedor> proveedores = proveedoresDAO.getAllProveedores(idVeterinario);
+        request.setAttribute("Proveedores", proveedores);
+        
+        ArrayList<Producto> productos = productosDAO.getAllProductos(idVeterinario);
+        request.setAttribute("Productos", productos);
         
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("inventario.jsp");
