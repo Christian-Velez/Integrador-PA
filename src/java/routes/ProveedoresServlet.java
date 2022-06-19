@@ -4,15 +4,14 @@
  */
 package routes;
 
-import dbcontrollers.CitaController;
-import dbcontrollers.ClienteController;
+import dbcontrollers.ProveedorController;
 import dbcontrollers.VeterinarioController;
-import dbmodels.Cita;
-import dbmodels.Cliente;
 import dbmodels.Veterinario;
+import dbmodels.Proveedor;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,17 +23,17 @@ import java.util.ArrayList;
  *
  * @author C
  */
-@WebServlet(name = "CitasServlet", urlPatterns = {"/Citas"})
-public class CitasServlet extends HttpServlet {
-    CitaController citasDAO;
-    ClienteController clientesDAO;
+@WebServlet(name = "ProveedoresServlet", urlPatterns = {"/Proveedores"})
+public class ProveedoresServlet extends HttpServlet {
+    ProveedorController proveedoresDAO;
     
+
     public void init() {
-        citasDAO = new CitaController();
-        clientesDAO = new ClienteController();
+        proveedoresDAO = new ProveedorController();
     }
-    
-    
+
+
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
@@ -66,7 +65,7 @@ public class CitasServlet extends HttpServlet {
         
         switch (action) {
             case "ADD":
-                insertCita(request, response);
+                insertProveedor(request, response);
                 break;
                 
             case "EDIT":
@@ -74,72 +73,57 @@ public class CitasServlet extends HttpServlet {
                 break;
                 
             case "UPDATE":
-                updateCita(request, response);
+                updateProveedor(request, response);
                 break;
                 
             case "DELETE":
-                deleteCita(request, response);
+                deleteProveedor(request, response);
                 break;
             
             default:
-                showCitas(request, response);
+                showProveedores(request, response);
                 break;
         }
     }
     
-    private void insertCita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void insertProveedor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
-        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
-        String nombre = request.getParameter("nombre");
-        String fecha = request.getParameter("fecha");
         
-        citasDAO.insertCita(idVeterinario, idCliente, nombre, fecha);
-        response.sendRedirect("Citas");
+        String nombre = request.getParameter("nombre");
+        String direccion = request.getParameter("direccion");
+        proveedoresDAO.insertProveedor(idVeterinario, nombre, direccion);
+        response.sendRedirect("Proveedores");
     }
     
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int idCita = Integer.parseInt(request.getParameter("id"));
-        Cita cita = citasDAO.selectCita(idCita);
-        
-        request.setAttribute("Cita", cita);
-
-        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
-        ArrayList<Cliente> clientes = clientesDAO.getAllClientes(idVeterinario);
-        request.setAttribute("Clientes", clientes);
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("citas-form.jsp");
+        int idProveedor = Integer.parseInt(request.getParameter("id"));
+        Proveedor proveedor = proveedoresDAO.selectProveedor(idProveedor);
+        request.setAttribute("Proveedor", proveedor);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("proveedores-form.jsp");
         dispatcher.forward(request, response);
     }
     
-    private void updateCita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int idCita = Integer.parseInt(request.getParameter("idCita"));
-        int idCliente = Integer.parseInt(request.getParameter("idCliente"));
+    private void updateProveedor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
         String nombre = request.getParameter("nombre");
-        String fecha = request.getParameter("fecha");
-        citasDAO.updateCita(idCita, idCliente, nombre, fecha);
-        response.sendRedirect("Citas");
+        String direccion = request.getParameter("direccion");
+        proveedoresDAO.updateProveedor(idProveedor, nombre, direccion);
+        response.sendRedirect("Proveedores");
     }
     
-    private void deleteCita(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        int idCita = Integer.parseInt(request.getParameter("id"));
-        citasDAO.deleteCita(idCita);
-        response.sendRedirect("Citas");
+    private void deleteProveedor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idProveedor = Integer.parseInt(request.getParameter("id"));
+        proveedoresDAO.deleteProveedor(idProveedor);
+        response.sendRedirect("Proveedores");
     }
     
-    private void showCitas(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void showProveedores(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        ArrayList<Proveedor> proveedores = proveedoresDAO.getAllProveedores(idVeterinario);
+        request.setAttribute("Proveedores", proveedores);
         
-        ArrayList<Cita> citas = citasDAO.getAllCitas(idVeterinario);
-        request.setAttribute("Citas", citas);
-        
-        ArrayList<Cliente> clientes = clientesDAO.getAllClientes(idVeterinario);
-        request.setAttribute("Clientes", clientes);
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("citas.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("proveedores.jsp");
         dispatcher.forward(request, response);
     }
-    
-    
-    
-    
+
 }

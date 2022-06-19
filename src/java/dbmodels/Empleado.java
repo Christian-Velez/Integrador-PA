@@ -8,22 +8,25 @@ package dbmodels;
  *
  * @author C
  */
-public class Producto {
+public class Empleado {
     public int id;
     public int idVeterinario;
-    public int idProveedor;
-    
     public String nombre;
-    public int cantidad;
+    public int edad;
+    public int pago;
     
-    public Producto() {}
     
-    public Producto(int id, int idVeterinario, int idProveedor, String nombre, int cantidad) {
+    public Empleado() {}
+    
+    public Empleado(int id, int idVeterinario, String nombre, int edad, int pago ) {
         this.id = id;
         this.idVeterinario = idVeterinario;
-        this.idProveedor = idProveedor;
         this.nombre = nombre;
-        this.cantidad = cantidad;
+        this.edad = edad;
+        this.pago = pago;
     }
+    
+    
+    
     
 }

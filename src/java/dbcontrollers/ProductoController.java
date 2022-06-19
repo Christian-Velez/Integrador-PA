@@ -8,6 +8,6 @@ package dbcontrollers;
  *
  * @author C
  */
-public class ProductoController {
+public class ProductoController extends Controller {
     
 }

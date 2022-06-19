@@ -71,9 +71,11 @@ public class CarteraServlet extends HttpServlet {
                 break;
                 
             case "EDIT":
+                showEditForm(request, response);
                 break;
                 
             case "UPDATE":
+                updateMovimiento(request, response);
                 break;
                 
             case "DELETE":
@@ -105,7 +107,30 @@ public class CarteraServlet extends HttpServlet {
         carteraDAO.insertMovimiento(idVeterinario, concepto, cantidad, fecha);
         response.sendRedirect("Cartera");
     }
+     
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idMovimiento = Integer.parseInt(request.getParameter("id"));
+        Movimiento movimiento = carteraDAO.selectMovimiento(idMovimiento);
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("cartera-form.jsp");
+        request.setAttribute("Movimiento", movimiento);
+        dispatcher.forward(request, response);
+    }
     
+    private void updateMovimiento(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idMovimiento = Integer.parseInt(request.getParameter("idMovimiento"));
+        String concepto = request.getParameter("concepto");
+        String tipo = request.getParameter("tipo");
+        int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+        String fecha = request.getParameter("fecha");
+        
+        if(tipo.equals("GASTO")) {
+            cantidad = cantidad*(-1);
+        }
+        
+        carteraDAO.updateMovimiento(idMovimiento, concepto, cantidad, fecha);
+        response.sendRedirect("Cartera");
+    }
     
     private void deleteMovimiento(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int idMovimiento = Integer.parseInt(request.getParameter("id"));

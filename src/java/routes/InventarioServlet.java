@@ -4,6 +4,15 @@
  */
 package routes;
 
+import dbcontrollers.ProductoController;
+import dbcontrollers.TipoProductoController;
+import dbcontrollers.VeterinarioController;
+import dbmodels.Producto;
+import dbmodels.TipoProducto;
+
+import dbmodels.Veterinario;
+
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +20,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,69 +29,111 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "InventarioServlet", urlPatterns = {"/Inventario"})
 public class InventarioServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet InventarioServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet InventarioServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    ProductoController productosDAO;
+    TipoProductoController tiposDAO;
+    
+    public void init() {
+        productosDAO = new ProductoController();
+        tiposDAO = new TipoProductoController();
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
+    
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
+    }
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                    throws ServletException, IOException {
+        
+        // === VALIDACION ===
+        boolean isAuthenticated = Validator.isUserAuthenticated(request);
+        if(!isAuthenticated) {
+            response.sendRedirect("");
+            return;
+        }
+        
+        
+        // === INFORMACION GENERAL DEL VETERINARIO ===
+        String email = (String)request.getSession().getAttribute("email-session");
+        VeterinarioController uH = new VeterinarioController();
+        Veterinario user = uH.getVeterinario(email);
+        request.setAttribute("Usuario", user);
+        
+        
+        String action = request.getParameter("action");
+        System.out.println("Action: " + action);
+        if(action == null) {
+            action = "GET";
+        }
+        
+        switch (action) {
+            case "ADD_PRODUCTO":
+                break;
+                
+            case "EDIT_PRODUCTO":
+                break;
+                
+            case "UPDATE_PRODUCTO":
+                break;
+                
+            case "DELETE_PRODUCTO":
+                break;
+                
+                
+            case "ADD_TIPO":
+                insertTipo(request, response);
+                break;
+                
+            case "UPDATE_TIPO":
+                updateTipo(request, response);
+                break;
+                
+            case "DELETE_TIPO":
+                deleteTipo(request, response);
+                break;
+            
+            default:
+                showPage(request, response);
+                break;
+        }
+    }
+    
+    
+    private void insertTipo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        String nombre = request.getParameter("nombre");
+        
+        tiposDAO.insertTipo(idVeterinario, nombre);
+        response.sendRedirect("Inventario#tipos");
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+    private void updateTipo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+        String nombre = request.getParameter("nombre");
+        tiposDAO.updateTipo(idTipo, nombre);
+        response.sendRedirect("Inventario#tipos");
+        
+    }
+    
+    private void deleteTipo(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idTipo = Integer.parseInt(request.getParameter("id"));
+        tiposDAO.deleteTipo(idTipo);
+        response.sendRedirect("Inventario#tipos");
+    }
+    
+    private void showPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int idVeterinario = (Integer)request.getSession().getAttribute("idVeterinario");
+        
+        ArrayList<TipoProducto> tipos = tiposDAO.getAllTipos(idVeterinario);
+        request.setAttribute("Tipos", tipos);
+        
+        
+        RequestDispatcher dispatcher = request.getRequestDispatcher("inventario.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    
+    
 }

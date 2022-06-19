@@ -1,0 +1,50 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 19 jun 2022, 0:03:00
+    Author     : C
+*/
+
+.modal{
+  background-color: rgba(0,0,0,.8);
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  opacity:0;
+  pointer-events:none;
+  transition: all 1s;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-contenido{
+  background-color: white;
+  border-radius: 30px;
+  
+  width: 700px;
+  padding: 60px;
+  margin: 20% auto;
+  position: relative;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.title-modal {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+#tipos:target{
+  opacity:1;
+  pointer-events:auto;
+}

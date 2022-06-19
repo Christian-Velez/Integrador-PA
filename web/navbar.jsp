@@ -47,12 +47,6 @@
             </div>
         </a>
         
-        <a href="/Integrador/Inventario">
-            <div class="navbar-item">
-                Inventario
-            </div>
-        </a>
-
         <a href="/Integrador/Perros">
             <div class="navbar-item">
                 Perros
@@ -65,6 +59,29 @@
             </div>
         </a>
         
+        <hr>
+        
+        <a href="/Integrador/Empleados">
+            <div class="navbar-item">
+                Empleados
+            </div>
+        </a>
+        
+        <a href="/Integrador/Inventario">
+            <div class="navbar-item">
+                Inventario
+            </div>
+        </a>
+        <a href="/Integrador/Proveedores">
+            <div class="navbar-item">
+                Proveedores
+            </div>
+        </a>
+        
+       
+
+        
+        <hr>
         <a href="/Integrador/CloseSession">
             <div class="navbar-item">
                 Cerrar sesión
